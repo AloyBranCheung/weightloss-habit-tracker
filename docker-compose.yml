@@ -14,5 +14,21 @@ services:
       # https://github.com/docker-library/postgres/blob/22ca5c8d8e4b37bece4d38dbce1a060583b5308a/18/trixie/Dockerfile#L189
       - ./pgdata:/var/lib/postgresql
 
+  frontend:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    ports:
+      - 3000:3000
+    env_file:
+      - .env.local
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+    networks:
+      - app
+
 networks:
   app:
