@@ -6,6 +6,7 @@ const notion = new Client({
 
 export default notion;
 
-export enum NotionDatabaseIds {
-  WeeklyWeight = "2df9611aef538024931ac0294ff14536",
+export enum NotionDataSourceIds {
+  WeeklyWeight = "2df9611a-ef53-80c2-827a-000bd2accdbe",
+  FoodJournal = "2df9611a-ef53-8005-8d40-000b54daa54b",
 }
