@@ -1,5 +1,6 @@
 import { weekSummary, todaysFoodLog } from "@/utils/notion";
-import dayjs from "dayjs";
+
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const [summary, foodLog] = await Promise.all([
@@ -7,13 +8,17 @@ export default async function Home() {
     todaysFoodLog(),
   ]);
 
+  if (!summary || !foodLog) {
+    return <div>Add Notion data for this week to begin.</div>;
+  }
+
   const totalCaloriesEaten = foodLog.reduce(
     (acc, entry) => acc + entry.caloriesIn,
     0
   );
   const remainingCalories = summary.caloricDeficit - totalCaloriesEaten;
 
-  const thisWeeksDate = foodLog[0].date;
+  const thisWeeksDate = summary.date;
 
   return (
     <main className="h-screen w-full flex items-center justify-center flex-col gap-8 p-4">
@@ -22,13 +27,7 @@ export default async function Home() {
       </h1>
       <section>
         <h2>
-          <b>
-            This Week{" "}
-            {dayjs(thisWeeksDate)
-              .startOf("week")
-              .add(1, "day")
-              .format("YYYY-MM-DD")}
-          </b>
+          <b>This Week {thisWeeksDate}</b>
         </h2>
         <p>Weight: {summary.weightInLbs} lbs</p>
         <p>Caloric Deficit Goal : {summary.caloricDeficit} calories</p>
