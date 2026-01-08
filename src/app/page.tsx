@@ -1,4 +1,5 @@
 import { weekSummary, todaysFoodLog } from "@/utils/notion";
+import dayjs from "dayjs";
 
 export default async function Home() {
   const [summary, foodLog] = await Promise.all([
@@ -12,6 +13,8 @@ export default async function Home() {
   );
   const remainingCalories = summary.caloricDeficit - totalCaloriesEaten;
 
+  const thisWeeksDate = foodLog[0].date;
+
   return (
     <main className="h-screen w-full flex items-center justify-center flex-col gap-8 p-4">
       <h1>
@@ -19,12 +22,18 @@ export default async function Home() {
       </h1>
       <section>
         <h2>
-          <b>This Week&apos;s Weight</b>
+          <b>
+            This Week{" "}
+            {dayjs(thisWeeksDate)
+              .startOf("week")
+              .add(1, "day")
+              .format("YYYY-MM-DD")}
+          </b>
         </h2>
-        <p>Weight This Week: {summary.weightInLbs} lbs</p>
+        <p>Weight: {summary.weightInLbs} lbs</p>
         <p>Caloric Deficit Goal : {summary.caloricDeficit} calories</p>
       </section>
-      <section>
+      <section className="flex flex-col gap-2">
         <h2>
           <b>Today&apos;s Food Log {foodLog[0].date}</b>
         </h2>
@@ -35,9 +44,8 @@ export default async function Home() {
             </li>
           ))}
         </ul>
-        <h3>
-          <b>Total Calories Eaten: {totalCaloriesEaten}</b>
-        </h3>
+        <hr />
+        <h3>Total Calories Eaten: {totalCaloriesEaten}</h3>
         <p>
           <b>Remaining Calories: {remainingCalories}</b>
         </p>
