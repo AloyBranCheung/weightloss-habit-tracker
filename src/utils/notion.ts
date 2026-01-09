@@ -1,6 +1,6 @@
 import notion, { NotionDataSourceIds } from "@/lib/notion";
 import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import dayjs from "./extended-dayjs";
+import dayjs from "../lib/extended-dayjs";
 
 // retrive this week's weight
 export const weekSummary = async () => {
@@ -50,8 +50,8 @@ export const todaysFoodLog = async () => {
         property: "Date",
         date: {
           on_or_after: dayjs()
-            .startOf("day")
             .tz("America/Toronto")
+            .startOf("day")
             .format("YYYY-MM-DD"),
         },
       },
